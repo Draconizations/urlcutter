@@ -11,6 +11,9 @@ devDependencies:
   '@sveltejs/kit':
     specifier: ^1.20.4
     version: 1.27.3(svelte@4.2.2)(vite@4.5.0)
+  '@types/better-sqlite3':
+    specifier: ^7.6.6
+    version: 7.6.6
   better-sqlite3:
     specifier: ^9.0.0
     version: 9.0.0
@@ -22,7 +25,7 @@ devDependencies:
     version: 0.19.13
   drizzle-orm:
     specifier: ^0.28.6
-    version: 0.28.6(better-sqlite3@9.0.0)
+    version: 0.28.6(@types/better-sqlite3@7.6.6)(better-sqlite3@9.0.0)
   prettier:
     specifier: ^2.8.0
     version: 2.8.8
@@ -404,12 +407,24 @@ packages:
       - supports-color
     dev: true
 
+  /@types/better-sqlite3@7.6.6:
+    resolution: {integrity: sha512-nuFAptzt0hZYBvyLzKQCbuCCK+RN9PHH4ezar5EJLIg2qpVhwQ/uLvLO/K8A9O7N8DafawgFupiyXQSs0U48Ng==}
+    dependencies:
+      '@types/node': 20.8.10
+    dev: true
+
   /@types/cookie@0.5.3:
     resolution: {integrity: sha512-SLg07AS9z1Ab2LU+QxzU8RCmzsja80ywjf/t5oqw+4NSH20gIGlhLOrBDm1L3PBWzPa4+wkgFQVZAjE6Ioj2ug==}
     dev: true
 
   /@types/estree@1.0.4:
     resolution: {integrity: sha512-2JwWnHK9H+wUZNorf2Zr6ves96WHoWDJIftkcxPKsS7Djta6Zu519LarhRNljPXkpsZR2ZMwNCPeW7omW07BJw==}
+    dev: true
+
+  /@types/node@20.8.10:
+    resolution: {integrity: sha512-TlgT8JntpcbmKUFzjhsyhGfP2fsiz1Mv56im6enJ905xG1DAYesxJaeSbGqQmAw8OWPdhyJGhGSQGKRNJ45u9w==}
+    dependencies:
+      undici-types: 5.26.5
     dev: true
 
   /@types/pug@2.0.8:
@@ -682,7 +697,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.28.6(better-sqlite3@9.0.0):
+  /drizzle-orm@0.28.6(@types/better-sqlite3@7.6.6)(better-sqlite3@9.0.0):
     resolution: {integrity: sha512-yBe+F9htrlYER7uXgDJUQsTHFoIrI5yMm5A0bg0GiZ/kY5jNXTWoEy4KQtg35cE27sw1VbgzoMWHAgCckUUUww==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -744,6 +759,7 @@ packages:
       sqlite3:
         optional: true
     dependencies:
+      '@types/better-sqlite3': 7.6.6
       better-sqlite3: 9.0.0
     dev: true
 
@@ -1618,6 +1634,10 @@ packages:
     resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
     engines: {node: '>=14.17'}
     hasBin: true
+    dev: true
+
+  /undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
     dev: true
 
   /undici@5.26.5:
