@@ -6,8 +6,6 @@
 
 	export let data: PageData
 	export let form: ActionData
-
-	console.log(form?.forbiddenUrl)
 </script>
 
 {#if !data.authenticated}
@@ -39,6 +37,25 @@
 			<h2>Create new short link</h2>
 			{#if form?.insertError}
 				<p class="text-failure">Error inserting new url.</p>
+			{/if}
+			{#if form?.insertSuccess}
+				{#if form?.inserted.existingUrl}
+					<p class="text-success">
+						Successfully <b>updated</b>
+						{#if form?.inserted.isPublic}
+							public
+						{/if}
+						url "{form?.inserted.shortUrl}" (with tag "{form?.inserted.versionTag}")!
+					</p>
+				{:else}
+					<p class="text-success">
+						Successfully <b>created new</b>
+						{#if form?.inserted.isPublic}
+							public
+						{/if}
+						url "{form?.inserted.shortUrl}" (with tag "{form?.inserted.versionTag}")!
+					</p>
+				{/if}
 			{/if}
 			<section class="col" style="margin-bottom: 1rem;">
 				<label for="long-input">Full link</label>

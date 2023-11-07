@@ -101,7 +101,8 @@ export const actions = {
 		try {
 			const inserted = await insertUrl(shortUrl as string, longUrl as string, isPublic as unknown as boolean)
 			return {
-				inserted: inserted
+				inserted: inserted,
+				insertSuccess: true
 			}
 		} catch (error) {
 			console.error(error)
