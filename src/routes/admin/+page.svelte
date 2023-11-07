@@ -9,7 +9,7 @@
 	export let form: ActionData
 
 	const ipp = itemsPerPage()
-	const urls = data.urls.slice(0, ipp)
+	$: urls = data.urls.slice(0, ipp)
 </script>
 
 {#if !data.authenticated}
@@ -114,7 +114,7 @@
 		</form>
 		<section class="col" style="width: 100%;">
 			<h2>Existing links</h2>
-			<Pagination page={data.page} pageLength={data.urls.length} env="admin" />
+			<Pagination page={data.page} pageLength={data.urls.length} path="/admin" />
 			{#if urls.length > 0}
 				<ol class="flex-list text-left">
 					{#each urls as url}

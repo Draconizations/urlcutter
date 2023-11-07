@@ -7,11 +7,7 @@ export async function load({ cookies, params }) {
 	const loginCookie = cookies.get("authenticated")
 	const loggedIn = loginCookie ? true : false
 
-	const pageStr = params.page
-	let page = 1
-	if (pageStr) {
-		page = parseInt(pageStr)
-	}
+	const page = parseInt(params.page)
 
 	let urls: ShortUrl[] = []
 	let selectError: boolean = false
