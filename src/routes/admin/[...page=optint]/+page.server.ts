@@ -91,8 +91,8 @@ export const actions = {
 			return { forbiddenUrl: shortUrl, longUrl, isPublic }
 		}
 
-		if (shortUrl && (shortUrl as string).length < 2) {
-			return { tooShort: shortUrl, longUrl, isPublic }
+		if (shortUrl && /^\d+$/.test(shortUrl as string)) {
+			return { onlyNumbers: shortUrl, longUrl, isPublic }
 		}
 
 		// okay, let's go

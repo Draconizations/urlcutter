@@ -63,8 +63,8 @@
 					{#if form?.forbiddenUrl}
 						<p class="text-failure">Invalid url. "{form.forbiddenUrl}" is a reserved word.</p>
 					{/if}
-					{#if form?.tooShort}
-						<p class="text-failure">Invalid url. Url must be at least 2 characters</p>
+					{#if form?.onlyNumbers}
+						<p class="text-failure">Invalid url. Url can't only be numbers</p>
 					{/if}
 					<span style="margin-top: auto;">
 						ℹ️ Leaving this blank will generate a randomly generated url. Inputting an existing url will
