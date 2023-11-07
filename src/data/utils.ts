@@ -19,7 +19,7 @@ export function generateUrl(length: number) {
 	return result
 }
 
-export function getAdminUrls(page: number): shortUrl[] {
+export function getAdminUrls(page: number): ShortUrl[] {
 	const ipp = itemsPerPage()
 	return db()
 		.select()
@@ -30,7 +30,7 @@ export function getAdminUrls(page: number): shortUrl[] {
 		.all()
 }
 
-export function getPublicUrls(page: number): shortUrl[] {
+export function getPublicUrls(page: number): ShortUrl[] {
 	const ipp = itemsPerPage()
 
 	return db()
@@ -55,6 +55,39 @@ export function getRedirect(url: string, tag?: string) {
 		.innerJoin(longUrlTable, eq(urlTable.id, longUrlTable.shortUrlId))
 
 	return selected.get()
+}
+
+export function getUrlHistory(url: string, page: number): UrlHistory {
+	const ipp = itemsPerPage()
+
+	const short = db()
+		.select({
+			shortUrl: urlTable.shortUrl,
+			isPublic: urlTable.isPublic,
+			created: urlTable.created
+		})
+		.from(urlTable)
+		.where(eq(urlTable.shortUrl, url))
+		.get()
+
+	const long = db()
+		.select({
+			longUrl: longUrlTable.longUrl,
+			created: longUrlTable.created,
+			versionTag: longUrlTable.versionTag
+		})
+		.from(urlTable)
+		.where(eq(urlTable.shortUrl, url))
+		.innerJoin(longUrlTable, eq(urlTable.id, longUrlTable.shortUrlId))
+		.orderBy(desc(longUrlTable.created))
+		.limit(ipp + 1)
+		.offset((page - 1) * ipp)
+		.all()
+
+	return {
+		shortUrl: short,
+		longUrls: long
+	}
 }
 
 interface insertReturn {
