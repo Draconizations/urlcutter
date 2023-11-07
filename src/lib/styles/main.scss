@@ -171,7 +171,7 @@ input {
     background-color: var(--background);
 }
 
-.button, input[type="submit"], a.button {
+button, input[type="submit"], a.button {
     border: none;
     padding: 0.5rem;
     color: #ffffff;
@@ -183,11 +183,15 @@ input {
     display: inline-block;
 }
 
-.button:hover, input[type="submit"]:hover, a.button:hover {
+button:hover, input[type="submit"]:hover, a.button:hover {
     background-color: var(--button-hover);
     color: #ffffff;
     transition: all 0.1s ease-out;
     transform: scale(105%);
+}
+
+button.inactive, input[type="submit"].inactive {
+    background-color: var(--block);
 }
 
 .text-left {

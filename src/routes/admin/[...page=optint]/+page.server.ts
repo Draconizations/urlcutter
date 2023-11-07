@@ -3,16 +3,22 @@ import type { Actions } from "@sveltejs/kit"
 import type { shortUrl } from "$lib/types.js"
 import { insertUrl, allowedCharacters, getAdminUrls, forbiddenWords } from "$data/utils.js"
 
-export async function load({ cookies }) {
+export async function load({ cookies, params }) {
 	const loginCookie = cookies.get("authenticated")
 	const loggedIn = loginCookie ? true : false
+
+	const pageStr = params.page
+	let page = 1
+	if (pageStr) {
+		page = parseInt(pageStr)
+	}
 
 	let urls: shortUrl[] = []
 	let selectError: boolean = false
 	if (loggedIn) {
 		// ok! we're logged in, let's get the existing urls
 		try {
-			urls = getAdminUrls()
+			urls = getAdminUrls(page)
 		} catch (error) {
 			console.error(error)
 			selectError = true
@@ -22,7 +28,8 @@ export async function load({ cookies }) {
 	return {
 		authenticated: loggedIn,
 		urls: urls,
-		selectError: selectError
+		selectError: selectError,
+		page: page
 	}
 }
 

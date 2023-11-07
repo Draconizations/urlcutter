@@ -1,7 +1,8 @@
 import db from "$data"
-import { url as urlTable, longUrl as longUrlTable } from "$data/schema"
+import { url as urlTable, longUrl as longUrlTable, url } from "$data/schema"
 import { eq, desc, sql } from "drizzle-orm"
 import type { shortUrl } from "$lib/types"
+import { env } from "$env/dynamic/private"
 
 export const randomCharacters = "abcdefghijklmnopqrstuvwxyz"
 export const allowedCharacters = /^[A-Za-z0-9@_-]+$/
@@ -18,12 +19,23 @@ export function generateUrl(length: number) {
 	return result
 }
 
-export function getAdminUrls(): shortUrl[] {
-	// turns out we don't need this inner join
-	// but I'm keeping the query as a comment just in case
-	// const subQuery = db().select().from(longUrlTable).limit(1).orderBy(desc(longUrlTable.created)).as("long_url")
-	const selected = db().select().from(urlTable).orderBy(desc(urlTable.created)).all() // .leftJoin(subQuery, eq(urlTable.id, longUrlTable.shortUrlId)).all()
-	return selected
+export function getAdminUrls(page: number): shortUrl[] {
+	const ipp = itemsPerPage()
+	return db()
+		.select()
+		.from(urlTable)
+		.orderBy(desc(urlTable.created))
+		.limit(ipp)
+		.offset((page - 1) * ipp)
+		.all()
+}
+
+
+const itemsPerPage = () => {
+	const envItems = env.ITEMS_PER_PAGE || "15"
+	let itemsPerPage = parseInt(envItems)
+	if (isNaN(itemsPerPage)) itemsPerPage = 15
+	return itemsPerPage
 }
 
 interface insertReturn {

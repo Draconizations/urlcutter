@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from "$app/forms"
+	import Pagination from "$components/Pagination.svelte"
 	import ShortUrlEntry from "$components/ShortUrlEntry.svelte"
 	import type { PageData, ActionData } from "./$types"
 
@@ -9,7 +10,7 @@
 
 {#if !data.authenticated}
 	<section class="section-center justify-center">
-		<form action="?/login" method="post" use:enhance>
+		<form action="/admin?/login" method="post" use:enhance>
 			<label for="password-input">Enter admin password</label><br />
 			<input type="password" id="password-input" required name="password" />
 			<input type="submit" value="Awooga" />
@@ -32,7 +33,7 @@
 			<input type="submit" value="Logout" />
 		</form>
 
-		<form class="block col text-left" action="?/create" method="post" use:enhance>
+		<form class="block col text-left" action="/admin?/create" method="post" use:enhance>
 			<h2>Create new short link</h2>
 			{#if form?.insertError}
 				<p class="text-failure">Error inserting new url.</p>
@@ -89,6 +90,7 @@
 		</form>
 		<section class="col" style="width: 100%;">
 			<h2>Existing links</h2>
+			<Pagination page={data.page} pageLength={data.urls.length} />
 			{#if data.urls.length > 0}
 				<ol class="flex-list text-left">
 					{#each data.urls as url}
@@ -98,7 +100,9 @@
 			{:else if form?.insertError}
 				<p class="text-failure">Error fetching urls.</p>
 			{:else}
-				<p>No urls yet!</p>
+				<section class="block">
+					<span>No urls on this page!</span>
+				</section>
 			{/if}
 		</section>
 	</section>
