@@ -3,13 +3,14 @@
 	import type { LongUrl } from "$lib/types"
 
 	export let longUrl: LongUrl
+	export let shortUrl: string
 	export let env: "admin" | "public" = "public"
 </script>
 
 <li class="block col">
 	<div class="row-wrap" style="justify-content: space-between; align-items: center;">
 		<span style="flex: 1;">
-			<b><a href={longUrl.longUrl}>{longUrl.versionTag}</a></b>
+			<b><a href={`/${shortUrl}/${longUrl.versionTag}`}>{longUrl.versionTag}</a></b>
 		</span>
 		<span>
 			{longUrl.created

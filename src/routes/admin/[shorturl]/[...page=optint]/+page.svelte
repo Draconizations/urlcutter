@@ -55,7 +55,7 @@
 			/>
 			<ol class="flex-list text-left">
 				{#each longUrls as longUrl}
-					<LongUrlEntry {longUrl} env="admin" />
+					<LongUrlEntry {longUrl} shortUrl={data.url.shortUrl?.shortUrl || "ok"} env="admin" />
 				{/each}
 			</ol>
 		{:else if data.selectError}

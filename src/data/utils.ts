@@ -53,8 +53,9 @@ export function getRedirect(url: string, tag?: string) {
 		.where(eq(urlTable.shortUrl, url))
 		.orderBy(desc(longUrlTable.created))
 		.innerJoin(longUrlTable, eq(urlTable.id, longUrlTable.shortUrlId))
-
-	return selected.get()
+	if (tag) {
+		return selected.where(eq(longUrlTable.versionTag, tag)).get()
+	} else return selected.get()
 }
 
 export function getUrlHistory(url: string, page: number): UrlHistory {
