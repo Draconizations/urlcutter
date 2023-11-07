@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "44d4f0c4-ac9c-44af-8999-761327f9b5c8",
+  "id": "6c5371e5-509a-4296-b9d4-c0ad00a2b045",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "long_url": {
@@ -25,9 +25,8 @@
           "name": "created",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "2023-11-06T18:54:07.035Z"
+          "notNull": true,
+          "autoincrement": false
         },
         "version_tag": {
           "name": "version_tag",
@@ -77,9 +76,8 @@
           "name": "created",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "2023-11-06T18:54:07.035Z"
+          "notNull": true,
+          "autoincrement": false
         },
         "is_public": {
           "name": "is_public",
