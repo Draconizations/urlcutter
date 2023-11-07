@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from "$app/forms"
+	import ShortUrlEntry from "$components/ShortUrlEntry.svelte"
 	import type { PageData, ActionData } from "./$types"
 
 	export let data: PageData
@@ -88,19 +89,7 @@
 			{#if data.urls.length > 0}
 				<ol class="flex-list text-left">
 					{#each data.urls as url}
-						<li class="block col">
-							<div class="row-wrap" style="justify-content: space-between">
-								<span>
-									<b>/<a href={`/${url.shortUrl}`}>{url.shortUrl}</a></b>
-									{#if url.isPublic}
-										(public)
-									{/if}
-								</span>
-								<span>
-									<a href={`/admin/${url.shortUrl}`}>edit</a>
-								</span>
-							</div>
-						</li>
+						<ShortUrlEntry {url} />
 					{/each}
 				</ol>
 			{:else if form?.insertError}
