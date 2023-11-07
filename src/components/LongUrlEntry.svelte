@@ -9,7 +9,7 @@
 <li class="block col">
 	<div class="row-wrap" style="justify-content: space-between; align-items: center;">
 		<span style="flex: 1;">
-			<b><a href={`/${longUrl.longUrl}`}>{longUrl.versionTag}</a></b>
+			<b><a href={longUrl.longUrl}>{longUrl.versionTag}</a></b>
 		</span>
 		<span>
 			{longUrl.created
@@ -29,9 +29,10 @@
 	<hr />
 	<details>
 		<summary>Full link</summary>
-		<div style="margin-top: 0.75rem;" />
-		<a style="word-wrap: break-word;" href={longUrl.longUrl}>
-			{longUrl.longUrl}
-		</a>
+		<div style="margin-top: 0.75rem;" class="block bg-background">
+			<a style="word-wrap: break-word;" href={longUrl.longUrl}>
+				{longUrl.longUrl}
+			</a>
+		</div>
 	</details>
 </li>
