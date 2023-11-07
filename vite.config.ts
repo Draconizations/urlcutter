@@ -7,6 +7,6 @@ const hash = execSync("git rev-parse --short HEAD").toString().trim()
 export default defineConfig({
 	plugins: [sveltekit()],
 	define: {
-		__COMMIT_HASH__: hash
+		__COMMIT_HASH__: JSON.stringify("_" + hash)
 	}
 })

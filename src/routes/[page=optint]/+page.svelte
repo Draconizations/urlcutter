@@ -8,7 +8,7 @@
 
 	const ipp = itemsPerPage()
 	const urls = data.urls.slice(0, ipp)
-	const version = "__COMMIT_HASH__"
+	const version = __COMMIT_HASH__.slice(1, __COMMIT_HASH__.length - 1)
 </script>
 
 <section class="section-center" style="gap: 1rem;">
