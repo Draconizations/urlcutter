@@ -5,7 +5,7 @@ export function load({ params }) {
 	const shortUrl = params.shorturl
 	const selected = getRedirect(shortUrl)
 
-	if (!selected || !selected.longUrl) {
+	if (!selected) {
 		throw error(404, {
 			message: `Redirect with url "${shortUrl}" not found.`
 		})
