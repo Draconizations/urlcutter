@@ -87,10 +87,12 @@ export const actions = {
 			return { invalidUrl: true, longUrl, isPublic }
 		}
 
+		// also check if we're not using some really silly words here
 		if (shortUrl && forbiddenWords.some((w) => (shortUrl as string).toLowerCase() === w)) {
 			return { forbiddenUrl: shortUrl, longUrl, isPublic }
 		}
 
+		// and finally: we need to make sure the page can't be confused for a list page
 		if (shortUrl && /^\d+$/.test(shortUrl as string)) {
 			return { onlyNumbers: shortUrl, longUrl, isPublic }
 		}

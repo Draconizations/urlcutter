@@ -6,11 +6,13 @@
 
 	export let data: PageData
 	export let form: ActionData
+
+	console.log(form?.forbiddenUrl)
 </script>
 
 {#if !data.authenticated}
 	<section class="section-center justify-center">
-		<form action="/admin?/login" method="post" use:enhance>
+		<form action="?/login" method="post" use:enhance>
 			<label for="password-input">Enter admin password</label><br />
 			<input type="password" id="password-input" required name="password" />
 			<input type="submit" value="Awooga" />
@@ -33,7 +35,7 @@
 			<input type="submit" value="Logout" />
 		</form>
 
-		<form class="block col text-left" action="/admin?/create" method="post" use:enhance>
+		<form class="block col text-left" action="?/create" method="post" use:enhance>
 			<h2>Create new short link</h2>
 			{#if form?.insertError}
 				<p class="text-failure">Error inserting new url.</p>
@@ -43,7 +45,7 @@
 				<div class="row">
 					<input
 						style="flex: 1;"
-						type="text"
+						type="url"
 						id="long-input"
 						name="long-url"
 						required
@@ -90,14 +92,14 @@
 		</form>
 		<section class="col" style="width: 100%;">
 			<h2>Existing links</h2>
-			<Pagination page={data.page} pageLength={data.urls.length} />
+			<Pagination page={data.page} pageLength={data.urls.length} env="admin" />
 			{#if data.urls.length > 0}
 				<ol class="flex-list text-left">
 					{#each data.urls as url}
 						<ShortUrlEntry {url} env="admin" />
 					{/each}
 				</ol>
-			{:else if form?.insertError}
+			{:else if data.selectError}
 				<p class="text-failure">Error fetching urls.</p>
 			{:else}
 				<section class="block">
