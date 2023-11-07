@@ -1,5 +1,5 @@
 import db from "$data"
-import { url as urlTable, longUrl as longUrlTable, url } from "$data/schema"
+import { url as urlTable, longUrl as longUrlTable } from "$data/schema"
 import { eq, desc, sql } from "drizzle-orm"
 import type { shortUrl } from "$lib/types"
 import { itemsPerPage } from "$lib/utils"
@@ -44,25 +44,17 @@ export function getPublicUrls(page: number): shortUrl[] {
 }
 
 export function getRedirect(url: string, tag?: string) {
-	const subQuery = db()
-		.select({
-			shortUrlId: longUrlTable.shortUrlId,
-			longUrl: longUrlTable.longUrl
-		})
-		.from(longUrlTable)
-		.orderBy(desc(longUrlTable.created))
-		.limit(1)
-		.as("long_url")
 	const selected = db()
 		.select({
 			shortUrl: urlTable.shortUrl,
-			longUrl: subQuery.longUrl
+			longUrl: longUrlTable.longUrl
 		})
 		.from(urlTable)
 		.where(eq(urlTable.shortUrl, url))
-		.leftJoin(subQuery, eq(urlTable.id, subQuery.shortUrlId))
-		.get()
-	return selected
+		.orderBy(desc(longUrlTable.created))
+		.innerJoin(longUrlTable, eq(urlTable.id, longUrlTable.shortUrlId))
+
+	return selected.get()
 }
 
 interface insertReturn {

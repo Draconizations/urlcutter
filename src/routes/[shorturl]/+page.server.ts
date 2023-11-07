@@ -11,5 +11,5 @@ export function load({ params }) {
 		})
 	}
 
-	throw redirect(301, selected.longUrl)
+	throw redirect(302, selected.longUrl)
 }
