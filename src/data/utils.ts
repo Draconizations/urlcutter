@@ -5,6 +5,7 @@ import type { shortUrl } from "$lib/types"
 
 export const randomCharacters = "abcdefghijklmnopqrstuvwxyz"
 export const allowedCharacters = /^[A-Za-z0-9@_-]+$/
+export const forbiddenWords = ["admin", "what"]
 
 export function generateUrl(length: number) {
 	let result = ""
@@ -21,8 +22,7 @@ export function getAdminUrls(): shortUrl[] {
 	// turns out we don't need this inner join
 	// but I'm keeping the query as a comment just in case
 	// const subQuery = db().select().from(longUrlTable).limit(1).orderBy(desc(longUrlTable.created)).as("long_url")
-	const selected = db().select().from(urlTable).all() // .leftJoin(subQuery, eq(urlTable.id, longUrlTable.shortUrlId)).all()
-	console.log(selected[0].created)
+	const selected = db().select().from(urlTable).orderBy(desc(urlTable.created)).all() // .leftJoin(subQuery, eq(urlTable.id, longUrlTable.shortUrlId)).all()
 	return selected
 }
 

@@ -1,7 +1,7 @@
 import { ADMIN_PASSWORD } from "$env/static/private"
 import type { Actions } from "@sveltejs/kit"
 import type { shortUrl } from "$lib/types.js"
-import { insertUrl, allowedCharacters, getAdminUrls } from "$data/utils.js"
+import { insertUrl, allowedCharacters, getAdminUrls, forbiddenWords } from "$data/utils.js"
 
 export async function load({ cookies }) {
 	const loginCookie = cookies.get("authenticated")
@@ -76,8 +76,12 @@ export const actions = {
 		const isPublic = formData.get("is-public")
 
 		// check if we're not using some really weird characters here
-		if (!allowedCharacters.test(shortUrl as string)) {
+		if (shortUrl && !allowedCharacters.test(shortUrl as string)) {
 			return { invalidUrl: true, longUrl, isPublic }
+		}
+
+		if (shortUrl && forbiddenWords.some((w) => (shortUrl as string).toLowerCase() === w)) {
+			return { forbiddenUrl: true, longUrl, isPublic, shortUrl }
 		}
 
 		// okay, let's go

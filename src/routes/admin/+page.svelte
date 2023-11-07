@@ -58,6 +58,9 @@
 					{#if form?.invalidUrl}
 						<p class="text-failure">Invalid url. Allowed characters: A-z, 0-9, - _ @.</p>
 					{/if}
+					{#if form?.forbiddenUrl}
+						<p class="text-failure">Invalid url. {form.shortUrl} is a reserved word.</p>
+					{/if}
 					<span style="margin-top: auto;">
 						ℹ️ Leaving this blank will generate a randomly generated url. Inputting an existing url will
 						create a new version of that url.
