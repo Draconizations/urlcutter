@@ -1,7 +1,7 @@
 import db from "$data"
 import { url as urlTable, longUrl as longUrlTable } from "$data/schema"
 import { eq, desc, sql } from "drizzle-orm"
-import type { shortUrl } from "$lib/types"
+import type { UrlHistory, ShortUrl } from "$lib/types"
 import { itemsPerPage } from "$lib/utils"
 
 export const randomCharacters = "abcdefghijklmnopqrstuvwxyz"

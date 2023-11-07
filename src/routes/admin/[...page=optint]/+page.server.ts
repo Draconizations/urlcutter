@@ -1,6 +1,6 @@
 import { ADMIN_PASSWORD } from "$env/static/private"
 import { redirect, type Actions } from "@sveltejs/kit"
-import type { shortUrl } from "$lib/types.js"
+import type { ShortUrl } from "$lib/types.js"
 import { insertUrl, allowedCharacters, getAdminUrls, forbiddenWords } from "$data/utils.js"
 
 export async function load({ cookies, params }) {
@@ -13,7 +13,7 @@ export async function load({ cookies, params }) {
 		page = parseInt(pageStr)
 	}
 
-	let urls: shortUrl[] = []
+	let urls: ShortUrl[] = []
 	let selectError: boolean = false
 	if (loggedIn) {
 		// ok! we're logged in, let's get the existing urls
