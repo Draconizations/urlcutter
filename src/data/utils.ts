@@ -6,7 +6,7 @@ import { env } from "$env/dynamic/private"
 
 export const randomCharacters = "abcdefghijklmnopqrstuvwxyz"
 export const allowedCharacters = /^[A-Za-z0-9@_-]+$/
-export const forbiddenWords = ["admin", "what"]
+export const forbiddenWords = ["admin", "what", "history"]
 
 export function generateUrl(length: number) {
 	let result = ""
@@ -30,6 +30,18 @@ export function getAdminUrls(page: number): shortUrl[] {
 		.all()
 }
 
+export function getPublicUrls(page: number): shortUrl[] {
+	const ipp = itemsPerPage()
+
+	return db()
+		.select()
+		.from(urlTable)
+		.orderBy(desc(urlTable.created))
+		.limit(ipp)
+		.offset((page - 1) * ipp)
+		.where(eq(urlTable.isPublic, true))
+		.all()
+}
 
 const itemsPerPage = () => {
 	const envItems = env.ITEMS_PER_PAGE || "15"
