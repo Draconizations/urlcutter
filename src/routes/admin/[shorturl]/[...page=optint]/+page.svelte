@@ -7,7 +7,7 @@
 	export let data
 
 	const ipp = itemsPerPage()
-	const longUrls = data.url?.longUrls.slice(0, ipp) ?? []
+	$: longUrls = data.url?.longUrls.slice(0, ipp) ?? []
 </script>
 
 <section class="section-center" style="gap: 1rem;">
