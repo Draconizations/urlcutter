@@ -1,6 +1,6 @@
 import db from "$data"
 import { url as urlTable, longUrl as longUrlTable, url } from "$data/schema"
-import { eq, desc, sql } from "drizzle-orm"
+import { eq, desc, sql, Subquery } from "drizzle-orm"
 import type { shortUrl } from "$lib/types"
 import { env } from "$env/dynamic/private"
 
@@ -43,6 +43,28 @@ export function getPublicUrls(page: number): shortUrl[] {
 		.all()
 }
 
+export function getRedirect(url: string, tag?: string) {
+	const subQuery = db()
+		.select({
+			shortUrlId: longUrlTable.shortUrlId,
+			longUrl: longUrlTable.longUrl
+		})
+		.from(longUrlTable)
+		.orderBy(desc(longUrlTable.created))
+		.limit(1)
+		.as("long_url")
+	const selected = db()
+		.select({
+			shortUrl: urlTable.shortUrl,
+			longUrl: subQuery.longUrl
+		})
+		.from(urlTable)
+		.where(eq(urlTable.shortUrl, url))
+		.leftJoin(subQuery, eq(urlTable.id, subQuery.shortUrlId))
+		.get()
+	return selected
+}
+
 const itemsPerPage = () => {
 	const envItems = env.ITEMS_PER_PAGE || "15"
 	let itemsPerPage = parseInt(envItems)
@@ -53,11 +75,9 @@ const itemsPerPage = () => {
 interface insertReturn {
 	versionTag: string
 	longUrl: string
-	longId: number
 	existingUrl: boolean
 	shortUrl: string
 	isPublic: boolean
-	shortId: number
 }
 
 export async function insertUrl(shortUrl: string | null, longUrl: string, isPublic: boolean): Promise<insertReturn> {
@@ -83,18 +103,15 @@ export async function insertUrl(shortUrl: string | null, longUrl: string, isPubl
 			})
 			.returning({
 				versionTag: longUrlTable.versionTag,
-				longUrl: longUrlTable.longUrl,
-				longId: longUrlTable.id
+				longUrl: longUrlTable.longUrl
 			})
 
 		return {
 			versionTag: inserted[0].versionTag,
 			longUrl: inserted[0].longUrl,
-			longId: inserted[0].longId,
 			existingUrl: true,
 			shortUrl: existingUrl.shortUrl,
-			isPublic: existingUrl.isPublic,
-			shortId: existingUrl.id
+			isPublic: existingUrl.isPublic
 		}
 	} else {
 		// okay, new url got. Let's insert that instead
@@ -130,8 +147,6 @@ export async function insertUrl(shortUrl: string | null, longUrl: string, isPubl
 			isPublic: insertedShort[0].isPublic,
 			shortUrl: insertedShort[0].shortUrl,
 			longUrl: insertedLong[0].longUrl,
-			shortId: insertedShort[0].shortId,
-			longId: insertedLong[0].longId,
 			versionTag: insertedLong[0].versionTag
 		}
 	}
