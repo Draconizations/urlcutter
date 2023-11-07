@@ -8,7 +8,7 @@
 <li class="block col">
 	<div class="row-wrap" style="justify-content: space-between">
 		<span style="flex: 1;">
-			<b>/<a href={`/${url.shortUrl}`}>{url.shortUrl}</a></b>
+			<b><a href={`/${url.shortUrl}`}>{url.shortUrl}</a></b>
 			{#if env === "admin" && url.isPublic}
 				(public)
 			{/if}
