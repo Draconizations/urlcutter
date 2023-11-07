@@ -81,7 +81,11 @@ export const actions = {
 		}
 
 		if (shortUrl && forbiddenWords.some((w) => (shortUrl as string).toLowerCase() === w)) {
-			return { forbiddenUrl: true, longUrl, isPublic, shortUrl }
+			return { forbiddenUrl: shortUrl, longUrl, isPublic }
+		}
+
+		if (shortUrl && (shortUrl as string).length < 2) {
+			return { tooShort: shortUrl, longUrl, isPublic }
 		}
 
 		// okay, let's go
