@@ -1,5 +1,6 @@
 import { getPublicUrls } from "$data/utils.js"
 import type { shortUrl } from "$lib/types.js"
+import { redirect } from "@sveltejs/kit"
 
 export async function load() {
 	const page = 1
@@ -13,6 +14,15 @@ export async function load() {
 	} catch (error) {
 		console.error(error)
 		selectError = true
+		return {
+			urls: urls,
+			selectError: selectError,
+			page: page
+		}
+	}
+
+	if (urls.length < 1 && page !== 1) {
+		throw redirect(302, "/")
 	}
 
 	return {

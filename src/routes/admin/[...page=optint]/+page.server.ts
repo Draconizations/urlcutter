@@ -1,5 +1,5 @@
 import { ADMIN_PASSWORD } from "$env/static/private"
-import type { Actions } from "@sveltejs/kit"
+import { redirect, type Actions } from "@sveltejs/kit"
 import type { shortUrl } from "$lib/types.js"
 import { insertUrl, allowedCharacters, getAdminUrls, forbiddenWords } from "$data/utils.js"
 
@@ -22,7 +22,17 @@ export async function load({ cookies, params }) {
 		} catch (error) {
 			console.error(error)
 			selectError = true
+			return {
+				authenticated: loggedIn,
+				urls: urls,
+				selectError: selectError,
+				page: page
+			}
 		}
+	}
+
+	if (urls.length < 1 && page !== 1) {
+		throw redirect(302, "/admin")
 	}
 
 	return {

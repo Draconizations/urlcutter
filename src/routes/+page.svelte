@@ -2,9 +2,12 @@
 	import Pagination from "$components/Pagination.svelte"
 	import ShortUrlEntry from "$components/ShortUrlEntry.svelte"
 	import { PUBLIC_GIT_URL } from "$env/static/public"
+	import { itemsPerPage } from "$lib/utils.js"
 
 	export let data
 
+	const ipp = itemsPerPage()
+	const urls = data.urls.slice(0, ipp)
 	const version = "__COMMIT_HASH__"
 </script>
 
@@ -12,9 +15,9 @@
 	<section class="col" style="width: 100%;">
 		<h2>Public links</h2>
 		<Pagination page={data.page} pageLength={data.urls.length} />
-		{#if data.urls.length > 0}
+		{#if urls.length > 0}
 			<ol class="flex-list text-left">
-				{#each data.urls as url}
+				{#each urls as url}
 					<ShortUrlEntry {url} />
 				{/each}
 			</ol>

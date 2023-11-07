@@ -1,8 +1,8 @@
 import db from "$data"
 import { url as urlTable, longUrl as longUrlTable, url } from "$data/schema"
-import { eq, desc, sql, Subquery } from "drizzle-orm"
+import { eq, desc, sql } from "drizzle-orm"
 import type { shortUrl } from "$lib/types"
-import { env } from "$env/dynamic/private"
+import { itemsPerPage } from "$lib/utils"
 
 export const randomCharacters = "abcdefghijklmnopqrstuvwxyz"
 export const allowedCharacters = /^[A-Za-z0-9@_-]+$/
@@ -25,7 +25,7 @@ export function getAdminUrls(page: number): shortUrl[] {
 		.select()
 		.from(urlTable)
 		.orderBy(desc(urlTable.created))
-		.limit(ipp)
+		.limit(ipp + 1)
 		.offset((page - 1) * ipp)
 		.all()
 }
@@ -37,7 +37,7 @@ export function getPublicUrls(page: number): shortUrl[] {
 		.select()
 		.from(urlTable)
 		.orderBy(desc(urlTable.created))
-		.limit(ipp)
+		.limit(ipp + 1)
 		.offset((page - 1) * ipp)
 		.where(eq(urlTable.isPublic, true))
 		.all()
@@ -63,13 +63,6 @@ export function getRedirect(url: string, tag?: string) {
 		.leftJoin(subQuery, eq(urlTable.id, subQuery.shortUrlId))
 		.get()
 	return selected
-}
-
-const itemsPerPage = () => {
-	const envItems = env.ITEMS_PER_PAGE || "15"
-	let itemsPerPage = parseInt(envItems)
-	if (isNaN(itemsPerPage)) itemsPerPage = 15
-	return itemsPerPage
 }
 
 interface insertReturn {
