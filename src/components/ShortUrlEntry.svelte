@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { shortUrl } from "$lib/types"
+	import type { ShortUrl } from "$lib/types"
 
-	export let url: shortUrl
+	export let url: ShortUrl
 	export let env: "admin" | "public" = "public"
 </script>
 
@@ -23,11 +23,9 @@
 					minute: "2-digit"
 				})
 				.toLowerCase()}
-			✦
 			{#if env === "admin"}
-				<a href={`/admin/${url.shortUrl}`}>edit</a>
-			{:else}
-				<a href={`/history/${url.shortUrl}`}>history</a>
+				✦
+				<a href={`/admin/${url.shortUrl}`}>view</a>
 			{/if}
 		</span>
 	</div>

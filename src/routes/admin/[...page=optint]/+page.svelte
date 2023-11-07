@@ -38,7 +38,7 @@
 			<input type="submit" class="bg-failure" value="Logout" />
 		</form>
 
-		<form class="block col text-left" action="?/create" method="post" use:enhance>
+		<form class="block col text-left" style="width: 100%;" action="?/create" method="post" use:enhance>
 			<h2>Create new short link</h2>
 			{#if form?.insertError}
 				<p class="text-failure">Error inserting new url.</p>
