@@ -89,7 +89,7 @@
 			{#if data.urls.length > 0}
 				<ol class="flex-list text-left">
 					{#each data.urls as url}
-						<ShortUrlEntry {url} />
+						<ShortUrlEntry {url} env="admin" />
 					{/each}
 				</ol>
 			{:else if form?.insertError}
