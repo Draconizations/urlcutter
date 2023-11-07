@@ -34,7 +34,8 @@
 			{#if form?.login}
 				<span class="text-success">Logged in successfully!</span>
 			{/if}
-			<input type="submit" value="Logout" />
+			<a href="/" class="button">Home</a>
+			<input type="submit" class="bg-failure" value="Logout" />
 		</form>
 
 		<form class="block col text-left" action="?/create" method="post" use:enhance>

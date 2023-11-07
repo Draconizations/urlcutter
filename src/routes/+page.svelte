@@ -40,3 +40,7 @@
 		<a class="button" href="/what">What is this?</a>
 	</div>
 </section>
+
+<svelte:head>
+	<title>URLCutter | Home</title>
+</svelte:head>

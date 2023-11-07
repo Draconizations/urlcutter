@@ -5,6 +5,8 @@
     --highlight: #05aab0;
     --scrollbar: #37352F;
     --button-hover: #057ab0;
+    --success: #62b828;
+    --failure: #d3112b;
 }
 
 @media (prefers-color-scheme: light) {
@@ -199,11 +201,19 @@ button.inactive, input[type="submit"].inactive {
 }
 
 .text-success {
-    color: #62b828;
+    color: var(--success)
 }
 
 .text-failure {
-    color: red;
+    color: var(--failure);
+}
+
+.bg-success {
+    background-color: var(--success) !important;
+}
+
+.bg-failure {
+    background-color: var(--failure) !important;
 }
 
 @media (min-width: 720px) {
