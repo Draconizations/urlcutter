@@ -1,8 +1,11 @@
 <script lang="ts">
 	import Pagination from "$components/Pagination.svelte"
 	import ShortUrlEntry from "$components/ShortUrlEntry.svelte"
+	import { PUBLIC_GIT_URL } from "$env/static/public"
 
 	export let data
+
+	const version = "__COMMIT_HASH__"
 </script>
 
 <section class="section-center" style="gap: 1rem;">
@@ -23,7 +26,14 @@
 			</section>
 		{/if}
 	</section>
-	<div style="display: inline-block; margin-left: auto; marin">
+	<div class="row" style="width: 100%; justify-content: space-between">
+		<span>
+			Commit <a
+				href={`${
+					PUBLIC_GIT_URL ? PUBLIC_GIT_URL : "https://github.com/Draconizations/urlcutter"
+				}/commit/${version}`}>{version}</a
+			>
+		</span>
 		<a class="button" href="/what">What is this?</a>
 	</div>
 </section>
