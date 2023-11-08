@@ -31,7 +31,7 @@
 		{#if form?.editShortFailure}
 			<span class="text-failure">Failed to edit short url.</span>
 		{/if}
-		<h1 style="font-size: 1.75rem;">
+		<h1 style="font-size: 1.5rem;">
 			{$page.url.host}/<a href={`/${data.url.shortUrl?.shortUrl}`}>{data.url.shortUrl?.shortUrl}</a>
 		</h1>
 		<span>
