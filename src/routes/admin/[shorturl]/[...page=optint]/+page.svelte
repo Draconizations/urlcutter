@@ -22,12 +22,14 @@
 	</form>
 
 	<section>
-		{#if data.editedUrl}
+		{#if form?.editShortSuccess}
+			<span class="text-success">Successfully edited "{data.url.shortUrl?.shortUrl}"!</span>
+		{:else if data.editedUrl}
 			<span class="text-success">Successfully renamed "{data.editedUrl}" to "{data.url.shortUrl?.shortUrl}"!</span
 			>
 		{/if}
-		{#if form?.editShortSuccess}
-			<span class="text-success">Successfully edited "{data.url.shortUrl?.shortUrl}"!</span>
+		{#if form?.editShortFailure}
+			<span class="text-failure">Failed to edit short url.</span>
 		{/if}
 		<h1 style="font-size: 1.75rem;">
 			{$page.url.hostname}/<a href={`/${data.url.shortUrl?.shortUrl}`}>{data.url.shortUrl?.shortUrl}</a>
@@ -63,9 +65,29 @@
 						id="new-short-input"
 						name="new-short-url"
 						required
-						value={data.url.shortUrl?.shortUrl}
+						value={form?.shortUrl || data.url.shortUrl?.shortUrl}
 					/>
 					<input type="submit" value="Submit!" />
+				</div>
+				<div class="text-left">
+					{#if form?.invalidUrl}
+						<p class="text-failure">Invalid url. Allowed characters: A-z, 0-9, - _ @.</p>
+					{/if}
+					{#if form?.forbiddenUrl}
+						<p class="text-failure">Invalid url. "{form.forbiddenUrl}" is a reserved word.</p>
+					{/if}
+					{#if form?.onlyNumbers}
+						<p class="text-failure">Invalid url. Url can't only be numbers</p>
+					{/if}
+				</div>
+				<div class="text-left">
+					<label for="is-public-input">Set URL to public?</label>
+					<input
+						type="checkbox"
+						id="is-public-input"
+						name="is-public"
+						checked={data.url.shortUrl?.isPublic === true ? true : false}
+					/>
 				</div>
 			</section>
 		</form>

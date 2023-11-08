@@ -247,12 +247,14 @@ export function editShortUrl(
 	shortUrl: string,
 	data: {
 		newShortUrl: string
+		isPublic: boolean
 	}
 ) {
 	const edited = db()
 		.update(urlTable)
 		.set({
-			shortUrl: data.newShortUrl
+			shortUrl: data.newShortUrl,
+			isPublic: data.isPublic ? true : false
 		})
 		.where(eq(urlTable.shortUrl, shortUrl))
 		.returning({

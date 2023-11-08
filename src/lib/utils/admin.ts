@@ -119,30 +119,55 @@ export async function editShort(cookies: Cookies, request: Request) {
 	const formData = await request.formData()
 	const currentShortUrl = formData.get("current-short-url")
 	let newShortUrl = formData.get("new-short-url")
+	const isPublic = formData.get("is-public")
 
 	if (!newShortUrl) newShortUrl = currentShortUrl
+
+	// check if we're not using some really weird characters here
+	if (newShortUrl && !allowedCharacters.test(newShortUrl as string)) {
+		return { invalidUrl: true, newShortUrl, shortUrl: currentShortUrl, isPublic }
+	}
+
+	// also check if we're not using some really silly words here
+	if (newShortUrl && forbiddenWords.some((w) => (newShortUrl as string).toLowerCase() === w)) {
+		return { forbiddenUrl: newShortUrl, shortUrl: currentShortUrl, isPublic }
+	}
+
+	// and finally: we need to make sure the page can't be confused for a list page
+	if (newShortUrl && /^\d+$/.test(newShortUrl as string)) {
+		return { onlyNumbers: newShortUrl, shortUrl: currentShortUrl, isPublic }
+	}
 
 	let edited: Record<string, any>
 	try {
 		edited = editShortUrl(currentShortUrl as string, {
-			newShortUrl: newShortUrl as string
+			newShortUrl: newShortUrl as string,
+			isPublic: isPublic as unknown as boolean
 		})
 	} catch (error) {
+		console.error(error)
 		return {
-			editShortFailure: true
+			editShortFailure: true,
+			shortUrl: currentShortUrl as string,
+			isPublic
 		}
 	}
 
-	if (!edited)
+	if (!edited) {
 		return {
-			editShortFailure: true
+			editShortFailure: true,
+			shortUrl: currentShortUrl as string,
+			isPublic
 		}
+	}
 
-	if (edited.newShortUrl !== edited.currentShortUrl)
+	if (newShortUrl !== currentShortUrl)
 		throw redirect(302, `/admin/${edited.newShortUrl}?msg=shortEdited&prev=${edited.prevShortUrl}`)
 	else
 		return {
-			editShortSuccess: true
+			editShortSuccess: true,
+			shortUrl: edited.newShortUrl as string,
+			isPublic
 		}
 }
 
