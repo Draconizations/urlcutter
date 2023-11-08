@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { url } from "$data/schema"
+	import { enhance } from "$app/forms"
 	import type { LongUrl } from "$lib/types"
 
 	export let longUrl: LongUrl
@@ -23,7 +23,11 @@
 				})
 				.toLowerCase()}
 			{#if env === "admin"}
-				<input type="submit" style="margin: 0;" class="bg-failure" value="Delete" />
+				<form style="display: inline;" action="?/deleteLongUrl" method="post" use:enhance>
+					<input type="hidden" name="short-url" value={shortUrl} />
+					<input type="hidden" name="version-tag" value={longUrl.versionTag} />
+					<input type="submit" style="margin: 0;" class="bg-failure" value="Delete" />
+				</form>
 			{/if}
 		</span>
 	</div>

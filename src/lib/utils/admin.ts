@@ -1,6 +1,6 @@
-import { redirect, type Cookies } from "@sveltejs/kit"
+import { redirect, type Cookies, error } from "@sveltejs/kit"
 import { ADMIN_PASSWORD } from "$env/static/private"
-import { insertUrl, allowedCharacters, forbiddenWords, getAdminUrls } from "$data/utils.js"
+import { insertUrl, allowedCharacters, forbiddenWords, getAdminUrls, deleteLongUrl } from "$data/utils.js"
 import type { ShortUrl } from "$lib/types"
 
 export async function login(cookies: Cookies, request: Request) {
@@ -41,7 +41,7 @@ export function logout(cookies: Cookies) {
 
 export async function create(cookies: Cookies, request: Request) {
 	if (!cookies.get("authenticated")) {
-		return { unauthorized: true }
+		throw error(403)
 	}
 
 	// ok, we're logged in, let's go
@@ -80,6 +80,27 @@ export async function create(cookies: Cookies, request: Request) {
 			longUrl,
 			shortUrl,
 			isPublic
+		}
+	}
+}
+
+export async function deleteLong(cookies: Cookies, request: Request) {
+	if (!cookies.get("authenticated")) throw error(403)
+
+	const formData = await request.formData()
+	let shortUrl = formData.get("short-url")
+	let versionTag = formData.get("version-tag")
+
+	try {
+		const deleted = await deleteLongUrl(shortUrl as string, versionTag as string)
+		return {
+			deleted: deleted,
+			deleteLongSuccess: true
+		}
+	} catch (error) {
+		console.error(error)
+		return {
+			deleteLongError: true
 		}
 	}
 }

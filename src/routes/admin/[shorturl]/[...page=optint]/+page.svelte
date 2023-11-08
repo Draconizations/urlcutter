@@ -3,8 +3,11 @@
 	import LongUrlEntry from "$components/LongUrlEntry.svelte"
 	import Pagination from "$components/Pagination.svelte"
 	import { itemsPerPage, getFirstIndex } from "$lib/utils.js"
+	import { page } from "$app/stores"
+	import type { ActionData, PageData } from "./$types"
 
-	export let data
+	export let data: PageData
+	export let form: ActionData
 
 	const ipp = itemsPerPage()
 	$: first = getFirstIndex(data.page)
@@ -18,11 +21,33 @@
 		<input type="submit" class="bg-failure" value="Logout" />
 	</form>
 
+	<section>
+		<h1 style="font-size: 1.75rem;">
+			{$page.url.hostname}/<a href={`/${data.url.shortUrl?.shortUrl}`}>{data.url.shortUrl?.shortUrl}</a>
+		</h1>
+		<span>
+			{#if data.url.shortUrl?.isPublic}
+				<b>public link</b>
+			{:else}
+				private link
+			{/if}
+			✦ created {data.url.shortUrl?.created
+				.toLocaleString("en-US", {
+					day: "2-digit",
+					month: "short",
+					hour: "2-digit",
+					hourCycle: "h24",
+					minute: "2-digit"
+				})
+				.toLowerCase()}
+		</span>
+	</section>
+
 	<section class="block text-left" style="width: 100%;">
 		<form class="col" style="width: 100%;" action="?/newUrl" method="post" use:enhance>
 			<h2>Edit short link</h2>
 			<section class="col" style="margin-bottom: 1rem;">
-				<label for="new-short-input">New short link</label>
+				<label for="new-short-input">Change short link</label>
 				<div class="row">
 					<input
 						style="flex: 1;"
@@ -32,7 +57,7 @@
 						required
 						value={data.url.shortUrl?.shortUrl}
 					/>
-					<input type="submit" value="Change url" />
+					<input type="submit" value="Submit!" />
 				</div>
 			</section>
 		</form>
@@ -49,6 +74,12 @@
 	</section>
 	<section class="col" style="width: 100%;">
 		<h2>Version history</h2>
+		{#if form?.deleteLongError}
+			<span class="text-failure">Error deleting long url version.</span>
+		{/if}
+		{#if form?.deleteLongSuccess}
+			<span class="text-success">Successfully deleted long url version!</span>
+		{/if}
 		{#if data.url?.longUrls}
 			<Pagination
 				page={data.page}

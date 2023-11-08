@@ -1,6 +1,6 @@
 import db from "$data"
 import { url as urlTable, longUrl as longUrlTable } from "$data/schema"
-import { eq, desc, sql } from "drizzle-orm"
+import { eq, desc, sql, and } from "drizzle-orm"
 import type { UrlHistory, ShortUrl } from "$lib/types"
 import { itemsPerPage, pageOffset } from "$lib/utils"
 
@@ -24,7 +24,11 @@ export function getAdminUrls(page: number): ShortUrl[] {
 	const po = pageOffset()
 
 	return db()
-		.select()
+		.select({
+			created: urlTable.created,
+			isPublic: urlTable.isPublic,
+			shortUrl: urlTable.shortUrl
+		})
 		.from(urlTable)
 		.orderBy(desc(urlTable.created))
 		.limit(ipp + po * 2 * ipp) // one page + 2x the amount of offset pages we want
@@ -37,7 +41,11 @@ export function getPublicUrls(page: number): ShortUrl[] {
 	const po = pageOffset()
 
 	return db()
-		.select()
+		.select({
+			created: urlTable.created,
+			isPublic: urlTable.isPublic,
+			shortUrl: urlTable.shortUrl
+		})
 		.from(urlTable)
 		.orderBy(desc(urlTable.created))
 		.limit(ipp + po * 2 * ipp) // one page + 2x the amount of offset pages we want
@@ -172,4 +180,26 @@ export async function insertUrl(shortUrl: string | null, longUrl: string, isPubl
 			versionTag: insertedLong[0].versionTag
 		}
 	}
+}
+
+export async function deleteLongUrl(shortUrl: string, versionTag: string) {
+	const shortSelected = db()
+		.select({
+			shortId: urlTable.id
+		})
+		.from(urlTable)
+		.where(eq(urlTable.shortUrl, shortUrl))
+		.get()
+
+	if (!shortSelected) throw Error(`No short url "${shortUrl} found."`)
+	const shortId = shortSelected.shortId
+
+	const deleted = await db()
+		.delete(longUrlTable)
+		.where(and(eq(longUrlTable.shortUrlId, shortId), eq(longUrlTable.versionTag, versionTag)))
+		.returning({
+			deletedVersion: longUrlTable.versionTag
+		})
+
+	return deleted
 }

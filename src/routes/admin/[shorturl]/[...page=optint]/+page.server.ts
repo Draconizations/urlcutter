@@ -1,6 +1,8 @@
 import { getUrlHistory } from "$data/utils.js"
 import type { UrlHistory } from "$lib/types"
+import { deleteLong } from "$lib/utils/admin"
 import { error, redirect } from "@sveltejs/kit"
+import type { Actions } from "@sveltejs/kit"
 
 export async function load({ cookies, params }) {
 	const loginCookie = cookies.get("authenticated")
@@ -50,3 +52,9 @@ export async function load({ cookies, params }) {
 		page: page
 	}
 }
+
+export const actions = {
+	deleteLongUrl: async ({ cookies, request }) => {
+		return await deleteLong(cookies, request)
+	}
+} satisfies Actions
