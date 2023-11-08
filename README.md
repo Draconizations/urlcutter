@@ -1,38 +1,18 @@
-# create-svelte
+# URLCuttter
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Personal link shortener! It allows the admin to add, edit and remove url redirects. It also supports url versioning.
 
-## Creating a project
+## Development
 
-If you're seeing this, you've probably already done this step. Congrats!
+Stack is sveltekit with an sqlite3 database, using drizzle orm. Development/deployment is relatively straightforward if you're familiar with those three things.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+There is no dockerfile as of right now. PRs for that are welcome. Pm2 should work out of the box.
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+## Environment Variables
 
-## Developing
+These environment variables are optional other than `ADMIN_PASSWORD`
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+-   `ADMIN_PASSWORD` - password for accessing the admin panel
+-   `PUBLIC_ITEMS_PER_PAGE` - max amount of items on a singular page. Defaults to 15
+-   `PUBLIC_PAGE_FETCH_OFFSET` - max amount of pages visible in pagination "next" to the current page. i.e. a value of 2 will show the pages `2 3 (4) 5 6`, when on page 2. Defaults to 3
+-   `PUBLIC_GIT_URL` - git repository url. defaults to https://github.com/Draconizations/urlcutter
