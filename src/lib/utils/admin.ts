@@ -6,7 +6,8 @@ import {
 	forbiddenWords,
 	getAdminUrls,
 	deleteLongUrl,
-	deleteShortUrl
+	deleteShortUrl,
+	editShortUrl
 } from "$data/utils.js"
 import type { ShortUrl } from "$lib/types"
 
@@ -110,6 +111,33 @@ export async function deleteLong(cookies: Cookies, request: Request) {
 			deleteLongError: true
 		}
 	}
+}
+
+export async function editShort(cookies: Cookies, request: Request) {
+	if (!cookies.get("authenticated")) throw error(403)
+
+	const formData = await request.formData()
+	const currentShortUrl = formData.get("current-short-url")
+	let newShortUrl = formData.get("new-short-url")
+
+	if (!newShortUrl) newShortUrl = currentShortUrl
+
+	let edited: Record<string, any>
+	try {
+		edited = editShortUrl(currentShortUrl as string, {
+			newShortUrl: newShortUrl as string
+		})
+	} catch (error) {
+		return {
+			editShortFailure: true
+		}
+	}
+
+	if (edited) throw redirect(302, `/admin/${edited.newShortUrl}?msg=shortEdited&prev=${edited.prevShortUrl}`)
+	else
+		return {
+			editShortFailure: true
+		}
 }
 
 export async function deleteShort(cookies: Cookies, request: Request) {

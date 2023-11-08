@@ -242,3 +242,28 @@ export function deleteShortUrl(shortUrl: string) {
 
 	return deleted
 }
+
+export function editShortUrl(
+	shortUrl: string,
+	data: {
+		newShortUrl: string
+	}
+) {
+	const edited = db()
+		.update(urlTable)
+		.set({
+			shortUrl: data.newShortUrl
+		})
+		.where(eq(urlTable.shortUrl, shortUrl))
+		.returning({
+			newShortUrl: urlTable.shortUrl
+		})
+		.get()
+
+	return {
+		...edited,
+		...{
+			prevShortUrl: shortUrl
+		}
+	}
+}
