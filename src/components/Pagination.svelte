@@ -21,9 +21,9 @@
 	// so what we need to do is to check if the actual last item in the list
 	// comes after the first item on that page
 	// if it does, then we can show the page!
-	function hasMoreItems(page: number, shift: number) {
+	function hasMoreItems(page: number, shift: number, pgLength: number) {
 		const potential = (page + shift) * ipp
-		const actual = offset + pageLength
+		const actual = offset + pgLength
 		return actual > potential
 	}
 
@@ -39,7 +39,7 @@
 	{/each}
 	<button tabindex="-1">{page}</button>
 	{#each Array.from(Array(po).keys()) as shift}
-		{#if hasMoreItems(page, shift)}
+		{#if hasMoreItems(page, shift, pageLength)}
 			<a class="button inactive" href={`${path}/${page + shift + 1}`}>
 				{page + shift + 1}
 			</a>
