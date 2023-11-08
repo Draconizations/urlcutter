@@ -6,3 +6,18 @@ export const itemsPerPage = () => {
 	if (isNaN(itemsPerPage)) itemsPerPage = 15
 	return itemsPerPage
 }
+
+export const pageOffset = () => {
+	const envPages = penv.PUBLIC_PAGE_FETCH_OFFSET || "3"
+	let pageAmount = parseInt(envPages)
+	if (isNaN(pageAmount)) pageAmount = 3
+	return pageAmount
+}
+
+export const getFirstIndex = (page: number) => {
+	const ipp = itemsPerPage()
+	const po = pageOffset()
+	const start = (page - 1) * ipp
+	const offset = ipp * po
+	return start <= offset ? start : offset
+}

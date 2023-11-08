@@ -2,7 +2,7 @@ import db from "$data"
 import { url as urlTable, longUrl as longUrlTable } from "$data/schema"
 import { eq, desc, sql } from "drizzle-orm"
 import type { UrlHistory, ShortUrl } from "$lib/types"
-import { itemsPerPage } from "$lib/utils"
+import { itemsPerPage, pageOffset } from "$lib/utils"
 
 export const randomCharacters = "abcdefghijklmnopqrstuvwxyz"
 export const allowedCharacters = /^[A-Za-z0-9@_-]+$/
@@ -21,24 +21,27 @@ export function generateUrl(length: number) {
 
 export function getAdminUrls(page: number): ShortUrl[] {
 	const ipp = itemsPerPage()
+	const po = pageOffset()
+
 	return db()
 		.select()
 		.from(urlTable)
 		.orderBy(desc(urlTable.created))
-		.limit(ipp + 1)
-		.offset((page - 1) * ipp)
+		.limit(ipp + po * 2 * ipp) // one page + 2x the amount of offset pages we want
+		.offset((page - 1) * ipp - ipp * po) // current page - 1x the amount of offset pages we want
 		.all()
 }
 
 export function getPublicUrls(page: number): ShortUrl[] {
 	const ipp = itemsPerPage()
+	const po = pageOffset()
 
 	return db()
 		.select()
 		.from(urlTable)
 		.orderBy(desc(urlTable.created))
-		.limit(ipp + 1)
-		.offset((page - 1) * ipp)
+		.limit(ipp + po * 2 * ipp) // one page + 2x the amount of offset pages we want
+		.offset((page - 1) * ipp - ipp * po) // current page - 1x the amount of offset pages we want
 		.where(eq(urlTable.isPublic, true))
 		.all()
 }

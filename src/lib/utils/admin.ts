@@ -113,6 +113,7 @@ export async function loadAdmin(
 		}
 	}
 
+	// I cannot be bothered to properly check if this page exists lol
 	if (urls.length < 1 && page !== 1) {
 		throw redirect(302, "/admin")
 	}

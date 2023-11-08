@@ -3,13 +3,15 @@
 	import Pagination from "$components/Pagination.svelte"
 	import ShortUrlEntry from "$components/ShortUrlEntry.svelte"
 	import type { PageData, ActionData } from "./$types"
-	import { itemsPerPage } from "$lib/utils"
+	import { itemsPerPage, getFirstIndex } from "$lib/utils"
 
 	export let data: PageData
 	export let form: ActionData
 
 	const ipp = itemsPerPage()
-	$: urls = data.urls.slice(0, ipp)
+	$: first = getFirstIndex(data.page)
+
+	$: urls = data.urls.slice(first, first + ipp)
 </script>
 
 {#if !data.authenticated}

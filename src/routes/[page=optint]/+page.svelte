@@ -2,12 +2,15 @@
 	import Pagination from "$components/Pagination.svelte"
 	import ShortUrlEntry from "$components/ShortUrlEntry.svelte"
 	import { PUBLIC_GIT_URL } from "$env/static/public"
-	import { itemsPerPage } from "$lib/utils.js"
+	import { getFirstIndex, itemsPerPage } from "$lib/utils.js"
 
 	export let data
 
 	const ipp = itemsPerPage()
-	$: urls = data.urls.slice(0, ipp)
+	$: first = getFirstIndex(data.page)
+
+	$: urls = data.urls.slice(first, first + ipp)
+
 	const version = __COMMIT_HASH__.slice(1, __COMMIT_HASH__.length - 1)
 </script>
 

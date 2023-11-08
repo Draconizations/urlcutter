@@ -2,12 +2,14 @@
 	import { enhance } from "$app/forms"
 	import LongUrlEntry from "$components/LongUrlEntry.svelte"
 	import Pagination from "$components/Pagination.svelte"
-	import { itemsPerPage } from "$lib/utils.js"
+	import { itemsPerPage, getFirstIndex } from "$lib/utils.js"
 
 	export let data
 
 	const ipp = itemsPerPage()
-	$: longUrls = data.url?.longUrls.slice(0, ipp) ?? []
+	$: first = getFirstIndex(data.page)
+
+	$: longUrls = data.url.longUrls.slice(first, first + ipp)
 </script>
 
 <section class="section-center" style="gap: 1rem;">
@@ -20,7 +22,7 @@
 		<form class="col" style="width: 100%;" action="?/newUrl" method="post" use:enhance>
 			<h2>Edit short link</h2>
 			<section class="col" style="margin-bottom: 1rem;">
-				<label for="new-short-input">Full link</label>
+				<label for="new-short-input">New short link</label>
 				<div class="row">
 					<input
 						style="flex: 1;"
