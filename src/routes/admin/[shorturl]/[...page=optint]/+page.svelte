@@ -109,3 +109,7 @@
 		{/if}
 	</section>
 </section>
+
+<svelte:head>
+	<title>URLCutter | {data.url.shortUrl?.shortUrl}</title>
+</svelte:head>
