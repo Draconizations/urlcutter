@@ -18,3 +18,7 @@ These environment variables are required!
 -   `PUBLIC_ITEMS_PER_PAGE` - max amount of items on a singular page
 -   `PUBLIC_PAGE_FETCH_OFFSET` - max amount of pages visible in pagination "next" to the current page. i.e. a value of 2 will show the pages `2 3 (4) 5 6`, when on page 4
 -   `PUBLIC_GIT_URL` - git repository url. for example "https://github.com/Draconizations/urlcutter"
+
+## Attribution
+
+-   Link Emoji (favicon): [Twemoji](https://twemoji.twitter.com/content/twemoji-twitter/en.html) (CC-BY 4.0)
