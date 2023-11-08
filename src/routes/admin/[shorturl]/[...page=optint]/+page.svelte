@@ -26,6 +26,9 @@
 			<span class="text-success">Successfully renamed "{data.editedUrl}" to "{data.url.shortUrl?.shortUrl}"!</span
 			>
 		{/if}
+		{#if form?.editShortSuccess}
+			<span class="text-success">Successfully edited "{data.url.shortUrl?.shortUrl}"!</span>
+		{/if}
 		<h1 style="font-size: 1.75rem;">
 			{$page.url.hostname}/<a href={`/${data.url.shortUrl?.shortUrl}`}>{data.url.shortUrl?.shortUrl}</a>
 		</h1>

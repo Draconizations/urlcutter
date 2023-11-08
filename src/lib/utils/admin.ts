@@ -133,10 +133,16 @@ export async function editShort(cookies: Cookies, request: Request) {
 		}
 	}
 
-	if (edited) throw redirect(302, `/admin/${edited.newShortUrl}?msg=shortEdited&prev=${edited.prevShortUrl}`)
-	else
+	if (!edited)
 		return {
 			editShortFailure: true
+		}
+
+	if (edited.newShortUrl !== edited.currentShortUrl)
+		throw redirect(302, `/admin/${edited.newShortUrl}?msg=shortEdited&prev=${edited.prevShortUrl}`)
+	else
+		return {
+			editShortSuccess: true
 		}
 }
 
