@@ -32,7 +32,7 @@
 			<span class="text-failure">Failed to edit short url.</span>
 		{/if}
 		<h1 style="font-size: 1.75rem;">
-			{$page.url.hostname}/<a href={`/${data.url.shortUrl?.shortUrl}`}>{data.url.shortUrl?.shortUrl}</a>
+			{$page.url.host}/<a href={`/${data.url.shortUrl?.shortUrl}`}>{data.url.shortUrl?.shortUrl}</a>
 		</h1>
 		<span>
 			{#if data.url.shortUrl?.isPublic}
