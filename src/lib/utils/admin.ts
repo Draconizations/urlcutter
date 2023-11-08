@@ -28,7 +28,7 @@ export async function login(cookies: Cookies, request: Request) {
 	// set the login cookie and redirect back to the page
 	cookies.set("authenticated", "I have a permit", {
 		path: "/admin",
-		maxAge: 1 * 60 * 60 * 24 // 24 hours
+		maxAge: 3 * 60 * 60 * 24 // 3 days
 	})
 
 	return { login: true }
