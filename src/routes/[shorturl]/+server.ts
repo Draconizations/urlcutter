@@ -1,7 +1,7 @@
 import { getRedirect } from "$data/utils.js"
 import { error, redirect } from "@sveltejs/kit"
 
-export function load({ params }) {
+export function GET({ params }) {
 	const shortUrl = params.shorturl
 	const selected = getRedirect(shortUrl)
 
