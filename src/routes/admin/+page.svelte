@@ -38,6 +38,9 @@
 			<input type="submit" class="bg-failure" value="Logout" />
 		</form>
 
+		{#if data.deletedUrl}
+			<span class="text-success">Successfully deleted short url "{data.deletedUrl}"!</span>
+		{/if}
 		<form class="block col text-left" style="width: 100%;" action="?/create" method="post" use:enhance>
 			<h2>Create new short link</h2>
 			{#if form?.insertError}

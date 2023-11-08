@@ -22,6 +22,10 @@
 	</form>
 
 	<section>
+		{#if data.editedUrl}
+			<span class="text-success">Successfully renamed "{data.editedUrl}" to "{data.url.shortUrl?.shortUrl}"!</span
+			>
+		{/if}
 		<h1 style="font-size: 1.75rem;">
 			{$page.url.hostname}/<a href={`/${data.url.shortUrl?.shortUrl}`}>{data.url.shortUrl?.shortUrl}</a>
 		</h1>
@@ -44,14 +48,15 @@
 	</section>
 
 	<section class="block text-left" style="width: 100%;">
-		<form class="col" style="width: 100%;" action="?/newUrl" method="post" use:enhance>
+		<form class="col" style="width: 100%;" action="?/editShortUrl" method="post" use:enhance>
 			<h2>Edit short link</h2>
 			<section class="col" style="margin-bottom: 1rem;">
 				<label for="new-short-input">Change short link</label>
 				<div class="row">
+					<input type="hidden" name="current-short-url" value={data.url.shortUrl?.shortUrl} />
 					<input
 						style="flex: 1;"
-						type="url"
+						type="text"
 						id="new-short-input"
 						name="new-short-url"
 						required
@@ -76,10 +81,10 @@
 	<section class="col" style="width: 100%;">
 		<h2>Version history</h2>
 		{#if form?.deleteLongError}
-			<span class="text-failure">Error deleting long url "{form?.deleted}".</span>
+			<p class="text-failure">Error deleting long url "{form?.deleted}".</p>
 		{/if}
 		{#if form?.deleteLongSuccess}
-			<span class="text-success">Successfully deleted long url "{form?.deleted}"!</span>
+			<p class="text-success">Successfully deleted long url "{form?.deleted}"!</p>
 		{/if}
 		{#if data.url?.longUrls.length > 0}
 			<Pagination

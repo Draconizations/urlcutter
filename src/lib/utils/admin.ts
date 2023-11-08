@@ -100,9 +100,9 @@ export async function deleteLong(cookies: Cookies, request: Request) {
 	let versionTag = formData.get("version-tag")
 
 	try {
-		const deleted = await deleteLongUrl(shortUrl as string, versionTag as string)
+		const deleted = deleteLongUrl(shortUrl as string, versionTag as string)
 		return {
-			deleted: deleted,
+			deleted: deleted?.deletedVersion,
 			deleteLongSuccess: true
 		}
 	} catch (error) {
@@ -156,7 +156,7 @@ export async function deleteShort(cookies: Cookies, request: Request) {
 		}
 	}
 
-	if (deleted) throw redirect(302, "/admin")
+	if (deleted) throw redirect(302, `/admin?msg=shortDeleted&del=${deleted.shortUrl.shortUrl}`)
 	else
 		return {
 			deleteShortFailure: true
@@ -167,7 +167,8 @@ export async function loadAdmin(
 	cookies: Cookies,
 	params: {
 		page?: string
-	}
+	},
+	url: URL
 ) {
 	const loginCookie = cookies.get("authenticated")
 	const loggedIn = loginCookie ? true : false
@@ -197,10 +198,16 @@ export async function loadAdmin(
 		throw redirect(302, "/admin")
 	}
 
+	let deletedUrl: string | null = null
+	if (url.searchParams.get("msg") === "shortDeleted") {
+		deletedUrl = url.searchParams.get("del")
+	}
+
 	return {
 		authenticated: loggedIn,
 		urls: urls,
 		selectError: selectError,
-		page: page
+		page: page,
+		deletedUrl: deletedUrl
 	}
 }
