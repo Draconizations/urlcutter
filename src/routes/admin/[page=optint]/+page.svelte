@@ -84,7 +84,6 @@
 				<section class="col flex-1">
 					<label for="short-input">Short link</label>
 					<input type="text" id="short-input" name="short-url" value={form?.shortUrl ?? ""} />
-					<hr />
 					{#if form?.invalidUrl}
 						<p class="text-failure">Invalid url. Allowed characters: A-z, 0-9, - _ @.</p>
 					{/if}
@@ -109,7 +108,6 @@
 							checked={form?.isPublic ? true : false}
 						/><br />
 					</span>
-					<hr />
 					<span style="margin-top: auto;">
 						ℹ️ If the link is set to public, it will show up on the homepage.
 					</span>
