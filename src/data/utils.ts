@@ -1,5 +1,5 @@
 import db from "$data"
-import { url as urlTable, longUrl as longUrlTable } from "$data/schema"
+import { url as urlTable, longUrl as longUrlTable, longUrl } from "$data/schema"
 import { eq, desc, sql, and } from "drizzle-orm"
 import type { UrlHistory, ShortUrl } from "$lib/types"
 import { itemsPerPage, pageOffset } from "$lib/utils"
@@ -182,7 +182,7 @@ export async function insertUrl(shortUrl: string | null, longUrl: string, isPubl
 	}
 }
 
-export async function deleteLongUrl(shortUrl: string, versionTag: string) {
+export function deleteLongUrl(shortUrl: string, versionTag: string) {
 	const shortSelected = db()
 		.select({
 			shortId: urlTable.id
@@ -194,12 +194,51 @@ export async function deleteLongUrl(shortUrl: string, versionTag: string) {
 	if (!shortSelected) throw Error(`No short url "${shortUrl} found."`)
 	const shortId = shortSelected.shortId
 
-	const deleted = await db()
+	const deleted = db()
 		.delete(longUrlTable)
 		.where(and(eq(longUrlTable.shortUrlId, shortId), eq(longUrlTable.versionTag, versionTag)))
 		.returning({
 			deletedVersion: longUrlTable.versionTag
 		})
+		.get()
+
+	return deleted
+}
+
+export function deleteShortUrl(shortUrl: string) {
+	const shortSelected = db()
+		.select({
+			shortId: urlTable.id
+		})
+		.from(urlTable)
+		.where(eq(urlTable.shortUrl, shortUrl))
+		.get()
+
+	if (!shortSelected) throw Error(`No short url "${shortUrl} found."`)
+	const shortId = shortSelected.shortId
+
+	const deleted = db().transaction((tx) => {
+		const long = tx
+			.delete(longUrlTable)
+			.where(eq(longUrl.shortUrlId, shortId))
+			.returning({
+				versionTag: longUrlTable.versionTag
+			})
+			.all()
+
+		const short = tx
+			.delete(urlTable)
+			.where(eq(urlTable.id, shortId))
+			.returning({
+				shortUrl: urlTable.shortUrl
+			})
+			.get()
+
+		return {
+			longUrls: long,
+			shortUrl: short
+		}
+	})
 
 	return deleted
 }

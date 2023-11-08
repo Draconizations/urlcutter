@@ -1,6 +1,13 @@
 import { redirect, type Cookies, error } from "@sveltejs/kit"
 import { ADMIN_PASSWORD } from "$env/static/private"
-import { insertUrl, allowedCharacters, forbiddenWords, getAdminUrls, deleteLongUrl } from "$data/utils.js"
+import {
+	insertUrl,
+	allowedCharacters,
+	forbiddenWords,
+	getAdminUrls,
+	deleteLongUrl,
+	deleteShortUrl
+} from "$data/utils.js"
 import type { ShortUrl } from "$lib/types"
 
 export async function login(cookies: Cookies, request: Request) {
@@ -103,6 +110,29 @@ export async function deleteLong(cookies: Cookies, request: Request) {
 			deleteLongError: true
 		}
 	}
+}
+
+export async function deleteShort(cookies: Cookies, request: Request) {
+	if (!cookies.get("authenticated")) throw error(403)
+
+	const formData = await request.formData()
+	let shortUrl = formData.get("short-url")
+
+	let deleted: Record<string, any>
+	try {
+		deleted = deleteShortUrl(shortUrl as string)
+	} catch (error) {
+		console.error(error)
+		return {
+			deleteShortFailure: true
+		}
+	}
+
+	if (deleted) throw redirect(302, "/admin")
+	else
+		return {
+			deleteShortFailure: true
+		}
 }
 
 export async function loadAdmin(

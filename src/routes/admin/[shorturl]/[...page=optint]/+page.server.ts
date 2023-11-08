@@ -1,6 +1,6 @@
 import { getUrlHistory } from "$data/utils.js"
 import type { UrlHistory } from "$lib/types"
-import { deleteLong } from "$lib/utils/admin"
+import { deleteLong, deleteShort } from "$lib/utils/admin"
 import { error, redirect } from "@sveltejs/kit"
 import type { Actions } from "@sveltejs/kit"
 
@@ -56,5 +56,9 @@ export async function load({ cookies, params }) {
 export const actions = {
 	deleteLongUrl: async ({ cookies, request }) => {
 		return await deleteLong(cookies, request)
+	},
+
+	deleteShortUrl: async ({ cookies, request }) => {
+		return await deleteShort(cookies, request)
 	}
 } satisfies Actions

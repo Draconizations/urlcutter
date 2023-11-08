@@ -67,6 +67,7 @@
 				<hr />
 			</summary>
 			<form class="text-left" action="?/deleteShortUrl" method="post" use:enhance>
+				<input type="hidden" name="short-url" value={data.url.shortUrl?.shortUrl} />
 				<input style="margin-right: 0.5rem" type="submit" class="bg-failure" value="Delete Url" />
 				⚠️ This is irreversible and does NOT ask for a confirmation!
 			</form>
@@ -75,12 +76,12 @@
 	<section class="col" style="width: 100%;">
 		<h2>Version history</h2>
 		{#if form?.deleteLongError}
-			<span class="text-failure">Error deleting long url version.</span>
+			<span class="text-failure">Error deleting long url "{form?.deleted}".</span>
 		{/if}
 		{#if form?.deleteLongSuccess}
-			<span class="text-success">Successfully deleted long url version!</span>
+			<span class="text-success">Successfully deleted long url "{form?.deleted}"!</span>
 		{/if}
-		{#if data.url?.longUrls}
+		{#if data.url?.longUrls.length > 0}
 			<Pagination
 				page={data.page}
 				pageLength={data.url?.longUrls.length}
