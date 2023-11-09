@@ -4,7 +4,7 @@ import { eq, desc, sql, and } from "drizzle-orm"
 import type { UrlHistory, ShortUrl } from "$lib/types"
 import { itemsPerPage, pageOffset } from "$lib/utils"
 
-export const randomCharacters = "abcdefghijklmnopqrstuvwxyz"
+export const randomCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW0123456789"
 export const allowedCharacters = /^[A-Za-z0-9@_-]+$/
 export const forbiddenWords = ["admin", "what", "history"]
 
@@ -111,7 +111,7 @@ interface insertReturn {
 }
 
 export async function insertUrl(shortUrl: string | null, longUrl: string, isPublic: boolean): Promise<insertReturn> {
-	if (!shortUrl) shortUrl = generateUrl(6)
+	if (!shortUrl) shortUrl = generateUrl(5)
 
 	// first check if the url already exists
 	const existingUrl = db()
