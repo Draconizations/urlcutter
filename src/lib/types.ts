@@ -1,7 +1,8 @@
 export interface ShortUrl {
 	created: Date
 	isPublic: boolean
-	shortUrl: string
+	shortUrl: string,
+	description: string|null
 }
 
 export interface UrlHistory {

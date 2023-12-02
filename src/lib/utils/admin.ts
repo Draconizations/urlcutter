@@ -120,6 +120,9 @@ export async function editShort(cookies: Cookies, request: Request) {
 	const currentShortUrl = formData.get("current-short-url")
 	let newShortUrl = formData.get("new-short-url")
 	const isPublic = formData.get("is-public")
+	let description = formData.get("description")
+
+	if (!description) description = null
 
 	if (!newShortUrl) newShortUrl = currentShortUrl
 
@@ -142,14 +145,16 @@ export async function editShort(cookies: Cookies, request: Request) {
 	try {
 		edited = editShortUrl(currentShortUrl as string, {
 			newShortUrl: newShortUrl as string,
-			isPublic: isPublic as unknown as boolean
+			isPublic: isPublic as unknown as boolean,
+			description: description as string|null
 		})
 	} catch (error) {
 		console.error(error)
 		return {
 			editShortFailure: true,
 			shortUrl: currentShortUrl as string,
-			isPublic
+			isPublic,
+			description: description as string|null
 		}
 	}
 
@@ -157,7 +162,8 @@ export async function editShort(cookies: Cookies, request: Request) {
 		return {
 			editShortFailure: true,
 			shortUrl: currentShortUrl as string,
-			isPublic
+			isPublic,
+			description: description as string|null
 		}
 	}
 
@@ -167,7 +173,8 @@ export async function editShort(cookies: Cookies, request: Request) {
 		return {
 			editShortSuccess: true,
 			shortUrl: edited.newShortUrl as string,
-			isPublic
+			isPublic,
+			description: description as string|null
 		}
 }
 

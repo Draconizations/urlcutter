@@ -1,0 +1,1 @@
+ALTER TABLE short_url ADD `description` text;

@@ -27,7 +27,8 @@ export function getAdminUrls(page: number): ShortUrl[] {
 		.select({
 			created: urlTable.created,
 			isPublic: urlTable.isPublic,
-			shortUrl: urlTable.shortUrl
+			shortUrl: urlTable.shortUrl,
+			description: urlTable.description
 		})
 		.from(urlTable)
 		.orderBy(desc(urlTable.created))
@@ -44,7 +45,8 @@ export function getPublicUrls(page: number): ShortUrl[] {
 		.select({
 			created: urlTable.created,
 			isPublic: urlTable.isPublic,
-			shortUrl: urlTable.shortUrl
+			shortUrl: urlTable.shortUrl,
+			description: urlTable.description
 		})
 		.from(urlTable)
 		.orderBy(desc(urlTable.created))
@@ -76,7 +78,8 @@ export function getUrlHistory(url: string, page: number): UrlHistory {
 		.select({
 			shortUrl: urlTable.shortUrl,
 			isPublic: urlTable.isPublic,
-			created: urlTable.created
+			created: urlTable.created,
+			description: urlTable.description
 		})
 		.from(urlTable)
 		.where(eq(urlTable.shortUrl, url))
@@ -247,14 +250,16 @@ export function editShortUrl(
 	shortUrl: string,
 	data: {
 		newShortUrl: string
-		isPublic: boolean
+		isPublic: boolean,
+		description: string|null
 	}
 ) {
 	const edited = db()
 		.update(urlTable)
 		.set({
 			shortUrl: data.newShortUrl,
-			isPublic: data.isPublic ? true : false
+			isPublic: data.isPublic ? true : false,
+			description: data.description
 		})
 		.where(eq(urlTable.shortUrl, shortUrl))
 		.returning({

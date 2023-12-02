@@ -55,7 +55,7 @@
 	<section class="block text-left" style="width: 100%;">
 		<form class="col" style="width: 100%;" action="?/editShortUrl" method="post" use:enhance>
 			<h2>Edit short link</h2>
-			<section class="col" style="margin-bottom: 1rem;">
+			<section class="col" style="margin-bottom: 0.5rem;">
 				<label for="new-short-input">Change short link</label>
 				<div class="row">
 					<input type="hidden" name="current-short-url" value={data.url.shortUrl?.shortUrl} />
@@ -89,6 +89,17 @@
 						checked={data.url.shortUrl?.isPublic === true ? true : false}
 					/>
 				</div>
+			</section>
+			<hr/>
+			<section class="col" style="margin-bottom: 1rem;">
+				<label for="description-input">Change description</label>
+				<textarea
+						style="flex: 1; resize: none;"
+						id="description-input"
+						name="description"
+						required
+						value={form?.description || (data.url.shortUrl?.description ?? "")}
+					></textarea>
 			</section>
 		</form>
 		<details>

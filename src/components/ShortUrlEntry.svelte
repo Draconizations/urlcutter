@@ -39,6 +39,10 @@
 			</span>
 		</div>
 	</div>
+	{#if url.description}
+	<hr />
+		<div class="blockquote">{url.description}</div>
+	{/if}
 </li>
 
 <style>

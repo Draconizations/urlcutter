@@ -1,11 +1,11 @@
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core"
-import { sql } from "drizzle-orm"
 
 export const url = sqliteTable("short_url", {
 	id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
 	created: integer("created", { mode: "timestamp" }).notNull(),
 	isPublic: integer("is_public", { mode: "boolean" }).notNull(),
-	shortUrl: text("short_url").notNull()
+	shortUrl: text("short_url").notNull(),
+	description: text("description")
 })
 
 export const longUrl = sqliteTable("long_url", {
