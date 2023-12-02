@@ -97,7 +97,6 @@
 						style="flex: 1; resize: none;"
 						id="description-input"
 						name="description"
-						required
 						value={form?.description || (data.url.shortUrl?.description ?? "")}
 					></textarea>
 			</section>
