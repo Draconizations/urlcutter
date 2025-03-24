@@ -201,6 +201,7 @@ button.inactive,
 input[type="submit"].inactive,
 a.button.inactive {
     background-color: var(--block);
+    color: var(--text);
 }
 
 .text-left {
