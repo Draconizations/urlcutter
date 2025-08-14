@@ -1,3 +1,6 @@
+> [!IMPORTANT]  
+> This repository has moved to https://git.pals.gay/fulmine/urlcutter
+
 # URLCuttter
 
 Personal link shortener! It allows the admin to add, edit and remove url redirects. It also supports url versioning.
